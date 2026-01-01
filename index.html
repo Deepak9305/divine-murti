@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Bhagavad Gita Shloka | DivineMurti.com</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --saffron: #FF9933; --gold: #D4AF37; --deep-blue: #1a2a6c;
+            --text-color: #333; --light-bg: #fff9f0;
+        }
+        body {
+            margin: 0; padding: 0; font-family: 'Lora', serif;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            background-attachment: fixed; color: var(--text-color);
+            display: flex; flex-direction: column; align-items: center; min-height: 100vh;
+        }
+        .container {
+            max-width: 800px; width: 92%; margin: 40px 0;
+            background: rgba(255, 255, 255, 0.98); padding: 40px;
+            border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.3); text-align: center;
+        }
+        h1 { font-family: 'Cinzel', serif; color: var(--deep-blue); margin-bottom: 5px; font-size: 2.2rem; }
+        .date-display { font-size: 0.9rem; color: #666; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 2px; }
+        
+        .sanskrit { font-size: 1.6rem; color: var(--saffron); font-weight: bold; margin-bottom: 25px; line-height: 1.8; white-space: pre-line; }
+        
+        .lang-label { font-family: 'Cinzel', serif; font-size: 0.8rem; color: var(--gold); text-transform: uppercase; margin-bottom: 10px; display: block; font-weight: bold; }
+        .translation-box { border-top: 1px solid #eee; padding: 20px 0; margin: 20px 0; }
+        .hindi-text { font-size: 1.4rem; line-height: 1.6; color: #b21f1f; margin-bottom: 20px; }
+        .english-text { font-size: 1.15rem; line-height: 1.7; color: #111; font-style: italic; }
+        
+        /* Improved Vedantic Insight Section */
+        .commentary-section { 
+            text-align: left; 
+            background: #fffdf2; 
+            padding: 30px; 
+            border: 1px solid #f0e6cc;
+            border-left: 6px solid var(--saffron); 
+            border-radius: 8px;
+            margin-top: 30px;
+            position: relative;
+        }
+        .commentary-header {
+            font-family: 'Cinzel', serif;
+            color: var(--deep-blue);
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            border-bottom: 1px dashed var(--gold);
+            padding-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .insight-text {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: #444;
+        }
+        .insight-text strong { color: var(--deep-blue); }
+
+        .share-buttons { margin-top: 35px; display: flex; justify: center; gap: 15px; flex-wrap: wrap; justify-content: center; }
+        .share-btn { padding: 12px 24px; border-radius: 30px; color: white; border: none; cursor: pointer; text-decoration: none; font-family: 'Cinzel', serif; font-size: 0.75rem; font-weight: bold; transition: 0.3s; }
+        .wa { background-color: #25D366; } .cp { background-color: var(--deep-blue); }
+        
+        .loader { border: 5px solid #f3f3f3; border-top: 5px solid var(--saffron); border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin: 40px auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div id="loading"><div class="loader"></div><p>Seeking Divine Guidance...</p></div>
+        
+        <div id="content" style="display: none;">
+            <h1 id="verse-title">Bhagavad Gita</h1>
+            <div class="date-display" id="current-date"></div>
+            
+            <div class="shloka-section">
+                <span class="lang-label">Sanskrit Shloka</span>
+                <div class="sanskrit" id="shloka-sanskrit"></div>
+            </div>
+
+            <div class="translation-box">
+                <span class="lang-label">हिन्दी अनुवाद</span>
+                <p class="hindi-text" id="shloka-hindi"></p>
+                <span class="lang-label">English Translation</span>
+                <p class="english-text" id="shloka-english"></p>
+            </div>
+
+            <div class="commentary-section">
+                <div class="commentary-header">
+                    <span>✧</span> Vedantic Insight <span>✧</span>
+                </div>
+                <div class="insight-text" id="shloka-commentary"></div>
+            </div>
+
+            <div class="share-buttons">
+                <a href="#" class="share-btn wa" id="share-wa" target="_blank">WhatsApp</a>
+                <button class="share-btn cp" id="copy-btn">Copy Shloka</button>
+            </div>
+        </div>
+
+        <div id="error" style="display: none; color: #b21f1f; padding: 20px;">
+            <p>Unable to connect. Please check your internet and refresh.</p>
+        </div>
+    </div>
+
+    <script>
+        const chapterSizes = [47, 72, 43, 42, 29, 47, 30, 28, 34, 42, 55, 20, 35, 27, 20, 24, 28, 78];
+
+        function getDailyVerse() {
+            const now = new Date();
+            const start = new Date(Date.UTC(2024, 0, 1)); 
+            const today = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
+            const diff = Math.floor((today - start) / (1000 * 60 * 60 * 24));
+            const verseIndex = (diff % 700) + 1;
+            let count = 0;
+            for (let i = 0; i < chapterSizes.length; i++) {
+                if (count + chapterSizes[i] >= verseIndex) {
+                    return { chapter: i + 1, verse: verseIndex - count };
+                }
+                count += chapterSizes[i];
+            }
+        }
+
+        async function fetchVerse() {
+            const info = getDailyVerse();
+            const apiURL = `https://vedicscriptures.github.io/slok/${info.chapter}/${info.verse}/`;
+
+            try {
+                const response = await fetch(apiURL);
+                if (!response.ok) throw new Error();
+                const data = await response.json();
+                renderUI(data, info);
+            } catch (err) {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('error').style.display = 'block';
+            }
+        }
+
+        function renderUI(data, info) {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('content').style.display = 'block';
+
+            document.getElementById('verse-title').innerText = `Gita ${info.chapter}.${info.verse}`;
+            document.getElementById('current-date').innerText = new Date().toLocaleDateString('en-US', { 
+                weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
+            });
+
+            document.getElementById('shloka-sanskrit').innerText = data.slok.trim();
+            
+            const hTrans = (data.tej && data.tej.ht) || (data.adi && data.adi.ht) || "हिन्दी अनुवाद उपलब्ध नहीं है।";
+            const eTrans = (data.purohit && data.purohit.et) || (data.sivananda && data.sivananda.et) || "Translation unavailable.";
+            
+            document.getElementById('shloka-hindi').innerText = hTrans;
+            document.getElementById('shloka-english').innerText = eTrans;
+
+            // Improved Insight Logic: Formatting the raw commentary
+            const rawCommentary = (data.sivananda && data.sivananda.ec) || "Focus on performing your prescribed duties without attachment to the results. Success and failure are secondary to the purity of your intent.";
+            
+            // We split the commentary by sentences and wrap the first one in a "The Essence" bold tag
+            const sentences = rawCommentary.split('. ');
+            const essence = sentences[0];
+            const reflection = sentences.slice(1).join('. ');
+
+            document.getElementById('shloka-commentary').innerHTML = `
+                <strong>The Essence:</strong> ${essence}.<br><br>
+                <strong>Modern Reflection:</strong> ${reflection || "Contemplate on how this verse relates to your current challenges and find peace in selfless action."}
+            `;
+
+            const shareText = `*Bhagavad Gita ${info.chapter}.${info.verse}*\n\n${data.slok}\n\n*English:* ${eTrans}\n\n*Wisdom:* ${essence}`;
+            document.getElementById('share-wa').href = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`;
+            
+            document.getElementById('copy-btn').onclick = () => {
+                navigator.clipboard.writeText(shareText);
+                const btn = document.getElementById('copy-btn');
+                btn.innerText = "✓ Copied!";
+                btn.style.backgroundColor = "#28a745";
+                setTimeout(() => {
+                    btn.innerText = "Copy Shloka";
+                    btn.style.backgroundColor = "var(--deep-blue)";
+                }, 2000);
+            };
+        }
+
+        fetchVerse();
+    </script>
+</body>
+</html>
