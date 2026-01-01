@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>पौराणिक कथा | DivineMurti.in</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root { --saffron: #FF9933; --gold: #D4AF37; --deep-blue: #1a2a6c; --parchment: #fdfaf0; }
+        body { margin: 0; font-family: 'Lora', serif; background: #1a1a1a; min-height: 100vh; color: #333; }
+        
+        /* Navigation Overlay */
+        .header-nav { position: fixed; top: 0; right: 0; padding: 20px; z-index: 1000; }
+        .menu-icon { font-size: 2.2rem; color: #fff; cursor: pointer; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .side-drawer { position: fixed; top: 0; right: -300px; width: 280px; height: 100%; background: var(--deep-blue); color: white; transition: 0.4s; z-index: 1001; padding-top: 60px; box-shadow: -5px 0 15px rgba(0,0,0,0.5); }
+        .side-drawer.open { right: 0; }
+        .menu-links { display: flex; flex-direction: column; padding: 20px; }
+        .menu-links a { font-family: 'Cinzel'; color: #fff; text-decoration: none; padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; z-index: 1000; }
+        .overlay.active { display: block; }
+
+        /* Story Page UI */
+        .story-wrapper { max-width: 850px; width: 92%; margin: 80px auto; }
+        .paper-card { 
+            background: var(--parchment); padding: 60px 50px; border-radius: 4px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.6); border: 1px solid #d4af37;
+            position: relative; line-height: 1.8;
+        }
+        .paper-card::after {
+            content: ""; position: absolute; top: 20px; left: 20px; right: 20px; bottom: 20px;
+            border: 1px solid rgba(212, 175, 55, 0.2); pointer-events: none;
+        }
+
+        .lang-btn {
+            position: absolute; top: 30px; right: 40px;
+            background: var(--deep-blue); color: white; border: none;
+            padding: 10px 20px; border-radius: 30px; cursor: pointer;
+            font-family: 'Cinzel'; font-size: 0.75rem; z-index: 10;
+        }
+
+        .story-header { text-align: center; margin-bottom: 40px; border-bottom: 2px solid var(--saffron); padding-bottom: 20px; }
+        .category { font-family: 'Cinzel'; font-size: 0.9rem; color: var(--gold); letter-spacing: 3px; }
+        .title { font-family: 'Cinzel'; font-size: 2.5rem; color: var(--deep-blue); margin: 15px 0; }
+        
+        .story-body { font-size: 1.3rem; text-align: justify; white-space: pre-line; color: #1a1a1a; }
+        .moral-highlight { 
+            margin-top: 50px; padding: 25px; background: rgba(255, 153, 51, 0.08); 
+            border-left: 6px solid var(--saffron); font-style: italic; font-size: 1.2rem;
+        }
+
+        .bottom-nav { text-align: center; margin-top: 60px; padding-bottom: 40px; }
+        .back-link { text-decoration: none; color: white; font-family: 'Cinzel'; border: 1px solid var(--gold); padding: 12px 30px; border-radius: 50px; transition: 0.3s; }
+        .back-link:hover { background: var(--gold); }
+    </style>
+</head>
+<body>
+
+    <div class="header-nav"><div class="menu-icon" onclick="toggleMenu()">☰</div></div>
+    <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+    <div class="side-drawer" id="sideDrawer">
+        <div class="close-btn" style="padding: 20px; cursor:pointer;" onclick="toggleMenu()">✕ Close</div>
+        <div class="menu-links">
+            <a href="index.html">Daily Shloka</a>
+            <a href="horoscope.html">Daily Horoscope</a>
+            <a href="stories.html" style="color: var(--saffron);">Today's Story</a>
+        </div>
+    </div>
+
+    <div class="story-wrapper">
+        <div class="paper-card">
+            <button class="lang-btn" onclick="switchLang()" id="langToggle">English Mode</button>
+            
+            <header class="story-header">
+                <div class="category" id="cat-label">आज की पौराणिक कथा</div>
+                <h1 class="title" id="story-title">समुद्र मंथन</h1>
+            </header>
+
+            <div class="story-body" id="main-story">
+                </div>
+
+            <div class="moral-highlight" id="moral-text">
+                </div>
+        </div>
+
+        <div class="bottom-nav">
+            <a href="index.html" class="back-link">← Return to Shloka</a>
+        </div>
+    </div>
+
+    <script>
+        let lang = 'hi';
+
+        function toggleMenu() {
+            document.getElementById('sideDrawer').classList.toggle('open');
+            document.getElementById('overlay').classList.toggle('active');
+        }
+
+        const library = [
+            {
+                hi: {
+                    cat: "आज की पौराणिक कथा",
+                    title: "समुद्र मंथन का सारांश",
+                    body: "जब महर्षि दुर्वासा के शाप के कारण देवता शक्तिहीन हो गए और असुरों ने स्वर्ग पर अधिकार कर लिया, तब भगवान विष्णु ने देवताओं को असुरों के साथ मिलकर 'समुद्र मंथन' करने की सलाह दी। इस कार्य के लिए मंदराचल पर्वत को मथानी और नागराज वासुकि को नेती बनाया गया।\n\nजैसे ही मंथन शुरू हुआ, सबसे पहले 'हलाहल' नामक भयंकर विष निकला। उसकी ज्वाला से दसों दिशाएं जलने लगीं। सृष्टि को बचाने के लिए भगवान शिव ने उस विष का पान किया और उसे अपने कंठ में रोक लिया, जिससे उनका गला नीला पड़ गया और वे 'नीलकंठ' कहलाए।\n\nमंथन जारी रहा और समुद्र से चौदह रत्न निकले, जिनमें देवी लक्ष्मी, कामधेनु गाय, ऐरावत हाथी और कल्पवृक्ष शामिल थे। अंत में भगवान धन्वंतरि अमृत का कलश लेकर प्रकट हुए। मोहिनी रूप धारण कर भगवान विष्णु ने असुरों को छला और देवताओं को अमृत पिलाया, जिससे देवताओं ने पुनः अपनी शक्ति प्राप्त की और असुरों को पराजित किया।",
+                    moral: "शिक्षा: कठिन परिश्रम और धैर्य के मार्ग में पहले विष (बाधाएं) आती हैं, लेकिन अंत में अमृत (सफलता) निश्चित है।",
+                    btn: "Read in English"
+                },
+                en: {
+                    cat: "Legend of the Day",
+                    title: "The Churning of the Ocean",
+                    body: "When the Devas lost their strength due to the curse of Sage Durvasa, the Asuras took control of the heavens. Lord Vishnu advised the Devas to team up with the Asuras to churn the celestial ocean (Samudra Manthan) to obtain the nectar of immortality (Amrit). Mount Mandara was used as the churning rod and the serpent King Vasuki served as the rope.\n\nAs the churning began, the first thing to emerge was 'Halahal', a deadly poison that threatened to consume all of creation. To save the universe, Lord Shiva stepped forward and consumed the poison. He held it in his throat, which turned blue, earning him the name 'Neelkanth'.\n\nThe churning continued, yielding fourteen divine treasures, including Goddess Lakshmi, the wish-fulfilling cow Kamadhenu, and the white elephant Airavata. Finally, Dhanvantari emerged carrying the pot of Amrit. Lord Vishnu took the form of Mohini to ensure the Devas received the nectar, allowing them to regain their glory and defeat the Asuras.",
+                    moral: "Moral: On the path to success, challenges (poison) often appear before the rewards (nectar). One must persist with courage.",
+                    btn: "हिंदी में पढ़ें"
+                }
+            }
+        ];
+
+        function loadContent() {
+            const data = library[0][lang]; // In a real app, use day-based index
+            document.getElementById('cat-label').innerText = data.cat;
+            document.getElementById('story-title').innerText = data.title;
+            document.getElementById('main-story').innerText = data.body;
+            document.getElementById('moral-text').innerHTML = `<b>${lang === 'hi' ? 'शिक्षा' : 'Moral'}:</b> ${data.moral.split(': ')[1]}`;
+            document.getElementById('langToggle').innerText = data.btn;
+        }
+
+        function switchLang() {
+            lang = (lang === 'hi') ? 'en' : 'hi';
+            loadContent();
+        }
+
+        // Run on load
+        loadContent();
+    </script>
+</body>
+</html>
