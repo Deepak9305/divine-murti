@@ -9,7 +9,7 @@
     <style>
         :root {
             --saffron: #FF9933; --gold: #D4AF37; --deep-blue: #1a2a6c;
-            --text-color: #333; --light-bg: #fffdf2; --parchment: #fdfaf0;
+            --text-color: #333; --parchment: #fdfaf0;
         }
         body {
             margin: 0; padding: 0; font-family: 'Lora', serif;
@@ -17,41 +17,68 @@
             background-attachment: fixed; color: var(--text-color);
             display: flex; flex-direction: column; align-items: center; min-height: 100vh;
         }
+
+        /* --- TOP MENU STYLES --- */
+        .header-nav {
+            position: fixed; top: 0; right: 0; padding: 20px; z-index: 1000;
+        }
+        .menu-icon {
+            font-size: 2rem; color: #fff; cursor: pointer;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.3); transition: 0.3s;
+        }
+        .menu-icon:hover { color: var(--gold); }
+
+        .side-drawer {
+            position: fixed; top: 0; right: -300px; width: 280px; height: 100%;
+            background: var(--deep-blue); color: white;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.5);
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1001; padding-top: 60px;
+        }
+        .side-drawer.open { right: 0; }
+        
+        .close-btn {
+            position: absolute; top: 20px; left: 20px;
+            font-size: 1.5rem; color: var(--gold); cursor: pointer;
+        }
+
+        .menu-links { display: flex; flex-direction: column; padding: 20px; }
+        .menu-links a {
+            font-family: 'Cinzel', serif; color: #fff; text-decoration: none;
+            padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.1);
+            font-size: 1.1rem; letter-spacing: 1px; transition: 0.3s;
+        }
+        .menu-links a:hover { color: var(--saffron); padding-left: 10px; }
+
+        .overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); display: none; z-index: 1000;
+        }
+        .overlay.active { display: block; }
+
+        /* --- MAIN CONTAINER STYLES --- */
         .container {
-            max-width: 800px; width: 92%; margin: 40px 0;
+            max-width: 800px; width: 92%; margin: 80px 0 40px 0;
             background: rgba(255, 255, 255, 0.98); padding: 40px;
             border-radius: 20px; box-shadow: 0 15px 45px rgba(0,0,0,0.4); text-align: center;
         }
         .brand-header { font-family: 'Cinzel', serif; color: var(--gold); font-size: 1rem; letter-spacing: 5px; margin-bottom: 5px; font-weight: 700; }
         h1 { font-family: 'Cinzel', serif; color: var(--deep-blue); font-size: 2.2rem; margin: 0 0 5px 0; }
         .date-display { font-size: 0.9rem; color: #666; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 2px; }
-        
         .sanskrit { font-size: 1.7rem; color: var(--saffron); font-weight: bold; margin-bottom: 30px; line-height: 1.8; white-space: pre-line; }
-        
-        .lang-label { font-family: 'Cinzel', serif; font-size: 0.85rem; color: var(--gold); text-transform: uppercase; margin-bottom: 12px; display: block; font-weight: bold; letter-spacing: 1px; }
         .translation-box { border-top: 1px solid #eee; border-bottom: 1px solid #eee; padding: 30px 0; margin: 25px 0; }
         .hindi-text { font-size: 1.55rem; line-height: 1.6; color: #b21f1f; margin-bottom: 25px; }
         .english-text { font-size: 1.2rem; line-height: 1.7; color: #111; font-style: italic; }
         
-        /* DETAILED INSIGHT SECTION */
         .commentary-section { 
             text-align: left; background: var(--parchment); padding: 40px; 
             border: 2px solid #f0e6cc; border-top: 5px solid var(--saffron); 
-            border-radius: 15px; margin-top: 35px; box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-            position: relative;
+            border-radius: 15px; margin-top: 35px; position: relative;
         }
-        .commentary-header { 
-            font-family: 'Cinzel', serif; color: var(--deep-blue); font-size: 1.4rem; 
-            margin-bottom: 25px; border-bottom: 1px solid var(--gold); padding-bottom: 10px;
-            text-align: center; letter-spacing: 3px;
-        }
-        .insight-block { margin-bottom: 25px; }
-        .insight-title { 
-            font-family: 'Cinzel', serif; font-size: 0.9rem; color: var(--gold); 
-            font-weight: 700; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;
-        }
-        .insight-content { font-size: 1.1rem; line-height: 1.8; color: #333; }
-        .quote-icon { font-size: 2rem; color: var(--gold); opacity: 0.2; position: absolute; top: 10px; left: 20px; }
+        .commentary-header { font-family: 'Cinzel', serif; color: var(--deep-blue); font-size: 1.4rem; margin-bottom: 25px; border-bottom: 1px solid var(--gold); padding-bottom: 10px; text-align: center; }
+        .insight-block { margin-bottom: 20px; }
+        .insight-title { font-family: 'Cinzel', serif; font-size: 0.85rem; color: var(--gold); font-weight: 700; margin-bottom: 5px; }
+        .insight-content { font-size: 1.05rem; line-height: 1.8; color: #333; }
 
         .share-group { margin-top: 40px; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
         .btn { padding: 15px 30px; border-radius: 50px; color: white; border: none; cursor: pointer; text-decoration: none; font-family: 'Cinzel', serif; font-size: 0.85rem; font-weight: bold; transition: 0.3s; }
@@ -63,6 +90,22 @@
     </style>
 </head>
 <body>
+
+    <div class="header-nav">
+        <div class="menu-icon" onclick="toggleMenu()">☰</div>
+    </div>
+
+    <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+    <div class="side-drawer" id="sideDrawer">
+        <div class="close-btn" onclick="toggleMenu()">✕</div>
+        <div class="menu-links">
+            <a href="/calendar">Religious Calendar</a>
+            <a href="/horoscope">Daily Horoscope</a>
+            <a href="/stories">Today's Story</a>
+            <a href="/" style="color: var(--gold); margin-top: 20px;">Daily Shloka</a>
+        </div>
+    </div>
 
     <div class="container">
         <div class="brand-header">DivineMurti.in</div>
@@ -82,33 +125,31 @@
             </div>
 
             <div class="commentary-section">
-                <span class="quote-icon">“</span>
                 <div class="commentary-header">✧ Vedantic Insight ✧</div>
-                
                 <div class="insight-block">
-                    <div class="insight-title">● The Core Essence</div>
+                    <div class="insight-title">The Essence</div>
                     <div class="insight-content" id="insight-essence"></div>
                 </div>
-
                 <div class="insight-block">
-                    <div class="insight-title">● Spiritual Context</div>
+                    <div class="insight-title">Spiritual Context</div>
                     <div class="insight-content" id="insight-context"></div>
-                </div>
-
-                <div class="insight-block">
-                    <div class="insight-title">● Modern Application</div>
-                    <div class="insight-content" id="insight-application"></div>
                 </div>
             </div>
 
             <div class="share-group">
-                <a href="#" class="btn btn-wa" id="whatsapp-link" target="_blank">Share on WhatsApp</a>
-                <button class="btn btn-share" id="system-share">System Share</button>
+                <a href="#" class="btn btn-wa" id="whatsapp-link" target="_blank">WhatsApp</a>
+                <button class="btn btn-share" id="system-share">Share Shloka</button>
             </div>
         </div>
     </div>
 
     <script>
+        // Menu Toggle Logic
+        function toggleMenu() {
+            document.getElementById('sideDrawer').classList.toggle('open');
+            document.getElementById('overlay').classList.toggle('active');
+        }
+
         const chapterSizes = [47, 72, 43, 42, 29, 47, 30, 28, 34, 42, 55, 20, 35, 27, 20, 24, 28, 78];
 
         function getDailyInfo() {
@@ -126,7 +167,7 @@
 
         async function init() {
             const info = getDailyInfo();
-            const cacheKey = `dm_v4_${info.ch}_${info.vs}`;
+            const cacheKey = `dm_v5_${info.ch}_${info.vs}`;
             const cached = localStorage.getItem(cacheKey);
 
             if (cached) {
@@ -148,24 +189,19 @@
             document.getElementById('loading').style.display = 'none';
             document.getElementById('content').style.display = 'block';
 
-            const title = `Gita Chapter ${info.ch}, Verse ${info.vs}`;
-            document.getElementById('verse-title').innerText = title;
+            document.getElementById('verse-title').innerText = `Chapter ${info.ch}, Verse ${info.vs}`;
             document.getElementById('current-date').innerText = new Date().toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
             
             document.getElementById('shloka-sanskrit').innerText = data.slok.trim();
             document.getElementById('shloka-hindi').innerText = data.tej?.ht || data.adi?.ht;
             document.getElementById('shloka-english').innerText = data.purohit?.et || data.sivananda?.et;
 
-            // DETAILED COMMENTARY LOGIC
-            const fullComm = data.sivananda?.ec || "Perform your duty with a pure heart and detached mind. Success and failure are equal in the eyes of the wise.";
+            const fullComm = data.sivananda?.ec || "Perform your duty with a pure heart.";
             const sentences = fullComm.split('. ');
-            
-            // Breaking down the commentary into parts
             document.getElementById('insight-essence').innerText = sentences[0] + '.';
-            document.getElementById('insight-context').innerText = (sentences[1] || "This verse appears in a critical moment of dialogue between Krishna and Arjuna") + '.';
-            document.getElementById('insight-application').innerText = (sentences.slice(2).join('. ') || "Apply this by focusing on your current task without worrying about the final outcome.");
+            document.getElementById('insight-context').innerText = (sentences[1] || "Reflect on this wisdom today.") + '.';
 
-            const shareText = `*${title}*\n\n"${data.slok.trim()}"\n\nRead the full Vedantic Insight at: https://divinemurti.in`;
+            const shareText = `*Gita ${info.ch}.${info.vs}*\n\n"${data.slok.trim()}"\n\nRead more at: https://divinemurti.in`;
             document.getElementById('whatsapp-link').href = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`;
             
             document.getElementById('system-share').onclick = () => {
