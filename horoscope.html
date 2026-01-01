@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>दैनिक राशिफल | DivineMurti.in</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root { --saffron: #FF9933; --gold: #D4AF37; --deep-blue: #1a2a6c; --parchment: #fdfaf0; }
+        body { margin: 0; font-family: 'Lora', serif; background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d); background-attachment: fixed; min-height: 100vh; }
+        
+        /* Menu & Navigation */
+        .header-nav { position: fixed; top: 0; right: 0; padding: 20px; z-index: 1000; }
+        .menu-icon { font-size: 2.2rem; color: #fff; cursor: pointer; }
+        .side-drawer { position: fixed; top: 0; right: -300px; width: 280px; height: 100%; background: var(--deep-blue); color: white; transition: 0.4s; z-index: 1001; padding-top: 60px; box-shadow: -5px 0 15px rgba(0,0,0,0.5); }
+        .side-drawer.open { right: 0; }
+        .menu-links { display: flex; flex-direction: column; padding: 20px; }
+        .menu-links a { font-family: 'Cinzel'; color: #fff; text-decoration: none; padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; z-index: 1000; }
+        .overlay.active { display: block; }
+
+        .container { max-width: 800px; width: 92%; margin: 80px auto; background: rgba(255, 255, 255, 0.98); padding: 40px; border-radius: 20px; text-align: center; box-shadow: 0 15px 45px rgba(0,0,0,0.3); }
+        .rashi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 12px; margin: 30px 0; }
+        .rashi-card { background: white; border: 1px solid #eee; border-radius: 12px; padding: 15px; cursor: pointer; transition: 0.3s; }
+        .rashi-card.active { border: 2px solid var(--saffron); background: var(--parchment); transform: scale(1.05); }
+        
+        /* Prediction Box Styles */
+        #prediction-box { display: none; background: var(--parchment); padding: 30px; border-radius: 15px; border-top: 5px solid var(--saffron); text-align: left; margin-top: 20px; animation: slideUp 0.5s ease; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .hindi-result { font-size: 1.3rem; color: #b21f1f; line-height: 1.6; margin-bottom: 15px; font-weight: 500; border-bottom: 1px dashed #ccc; padding-bottom: 15px; }
+        .english-result { font-size: 1rem; color: #555; font-style: italic; line-height: 1.5; }
+
+        .loader { display: none; width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid var(--saffron); border-radius: 50%; animation: spin 1s linear infinite; margin: 20px auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
+        .stat-item { background: white; padding: 10px; border-radius: 8px; border: 1px solid #eee; text-align: center; }
+        .stat-label { font-family: 'Cinzel'; font-size: 0.7rem; color: var(--gold); display: block; }
+        .back-btn { margin-top: 30px; display: inline-block; padding: 12px 25px; background: var(--deep-blue); color: white; text-decoration: none; border-radius: 50px; font-family: 'Cinzel'; }
+    </style>
+</head>
+<body>
+
+    <div class="header-nav"><div class="menu-icon" onclick="toggleMenu()">☰</div></div>
+    <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+    <div class="side-drawer" id="sideDrawer">
+        <div class="close-btn" style="padding: 20px; cursor:pointer;" onclick="toggleMenu()">✕ Close</div>
+        <div class="menu-links">
+            <a href="index.html">Daily Shloka</a>
+            <a href="calendar.html">Religious Calendar</a>
+            <a href="horoscope.html" style="color: var(--saffron);">Daily Horoscope</a>
+            <a href="stories.html">Today's Story</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div style="font-family: 'Cinzel'; color: var(--gold); letter-spacing: 5px; font-weight: bold;">DivineMurti.in</div>
+        <h1 style="font-family: 'Cinzel'; color: var(--deep-blue);">दैनिक राशिफल</h1>
+        
+        <div class="rashi-grid" id="rashiGrid"></div>
+        <div class="loader" id="loader"></div>
+
+        <div id="prediction-box">
+            <h2 id="selected-rashi" style="font-family: 'Cinzel'; color: var(--deep-blue); text-align: center; border-bottom: 1px solid var(--gold); padding-bottom: 10px;"></h2>
+            
+            <div id="horoscope-hindi" class="hindi-result">अनुवाद हो रहा है... (Translating...)</div>
+            <div id="horoscope-english" class="english-result"></div>
+            
+            <div class="stat-grid">
+                <div class="stat-item"><span class="stat-label">शुभ अंक</span><span id="lucky-num" style="font-weight:bold;"></span></div>
+                <div class="stat-item"><span class="stat-label">शुभ रंग</span><span id="lucky-col" style="font-weight:bold;"></span></div>
+            </div>
+        </div>
+
+        <a href="index.html" class="back-btn">← Back to Shloka</a>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById('sideDrawer').classList.toggle('open');
+            document.getElementById('overlay').classList.toggle('active');
+        }
+
+        const zodiacs = [
+            { id: "aries", hindi: "मेष", icon: "♈" }, { id: "taurus", hindi: "वृषभ", icon: "♉" },
+            { id: "gemini", hindi: "मिथुन", icon: "♊" }, { id: "cancer", hindi: "कर्क", icon: "♋" },
+            { id: "leo", hindi: "सिंह", icon: "♌" }, { id: "virgo", hindi: "कन्या", icon: "♍" },
+            { id: "libra", hindi: "तुला", icon: "♎" }, { id: "scorpio", hindi: "वृश्चिक", icon: "♏" },
+            { id: "sagittarius", hindi: "धनु", icon: "♐" }, { id: "capricorn", hindi: "मकर", icon: "♑" },
+            { id: "aquarius", hindi: "कुंभ", icon: "♒" }, { id: "pisces", hindi: "मीन", icon: "♓" }
+        ];
+
+        const colors = ["केसरिया (Saffron)", "सुनहरा (Gold)", "सफेद (White)", "पीला (Yellow)", "आसमानी (Sky Blue)", "गुलाबी (Pink)"];
+        const grid = document.getElementById('rashiGrid');
+        
+        zodiacs.forEach(z => {
+            const card = document.createElement('div');
+            card.className = 'rashi-card';
+            card.innerHTML = `<span style="font-size:2rem; display:block;">${z.icon}</span><span style="font-family:Cinzel; font-size:0.8rem; font-weight:bold;">${z.hindi}</span>`;
+            card.onclick = () => fetchAndTranslate(z, card);
+            grid.appendChild(card);
+        });
+
+        async function translateText(text) {
+            try {
+                // Using a free Google Translate bridge via fetch
+                const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=hi&dt=t&q=${encodeURI(text)}`;
+                const res = await fetch(url);
+                const data = await res.json();
+                return data[0].map(item => item[0]).join('');
+            } catch (err) {
+                return "क्षमा करें, अनुवाद उपलब्ध नहीं है।";
+            }
+        }
+
+        async function fetchAndTranslate(z, card) {
+            document.querySelectorAll('.rashi-card').forEach(c => c.classList.remove('active'));
+            card.classList.add('active');
+            
+            document.getElementById('prediction-box').style.display = 'none';
+            document.getElementById('loader').style.display = 'block';
+
+            const proxy = "https://api.allorigins.win/get?url=";
+            const target = `http://ohmanda.com/api/horoscope/${z.id}/`;
+
+            try {
+                const response = await fetch(proxy + encodeURIComponent(target));
+                const wrapper = await response.json();
+                const data = JSON.parse(wrapper.contents);
+                const englishText = data.horoscope;
+
+                // Call Translation
+                const hindiText = await translateText(englishText);
+
+                document.getElementById('loader').style.display = 'none';
+                document.getElementById('prediction-box').style.display = 'block';
+                
+                document.getElementById('selected-rashi').innerText = `${z.hindi} (${z.id.toUpperCase()})`;
+                document.getElementById('horoscope-hindi').innerText = hindiText;
+                document.getElementById('horoscope-english').innerText = englishText;
+                
+                const daySeed = new Date().getDate();
+                document.getElementById('lucky-num').innerText = (daySeed % 9) + 1;
+                document.getElementById('lucky-col').innerText = colors[daySeed % colors.length];
+
+                window.scrollTo({ top: document.getElementById('prediction-box').offsetTop - 100, behavior: 'smooth' });
+            } catch (err) {
+                document.getElementById('loader').style.display = 'none';
+                alert("Celestial servers are busy. Please try again!");
+            }
+        }
+    </script>
+</body>
+</html>
