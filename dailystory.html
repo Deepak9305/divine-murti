@@ -3,28 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>पौराणिक कथा | DivineMurti</title>
+    <title>आज की कथा | DivineMurti</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
     <style>
         :root { --saffron: #FF9933; --gold: #D4AF37; --deep-blue: #1a2a6c; --parchment: #fdfaf0; }
-        body { margin: 0; font-family: 'Lora', serif; background: #1a1a1a; min-height: 100vh; color: #333; overflow-x: hidden; }
+        body { margin: 0; font-family: 'Lora', serif; background: #1a1a1a; min-height: 100vh; color: #333; }
         
-        /* Navigation */
         .header-nav { position: fixed; top: 0; right: 0; padding: 20px; z-index: 1000; }
-        .menu-icon { font-size: 2.2rem; color: #fff; cursor: pointer; }
-        .side-drawer { position: fixed; top: 0; right: -300px; width: 280px; height: 100%; background: var(--deep-blue); color: white; transition: 0.4s; z-index: 1001; padding-top: 60px; }
-        .side-drawer.open { right: 0; }
-        .menu-links { display: flex; flex-direction: column; padding: 20px; }
-        .menu-links a { font-family: 'Cinzel'; color: #fff; text-decoration: none; padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; z-index: 1000; }
-        .overlay.active { display: block; }
-
-        /* Story Card */
-        .story-wrapper { max-width: 850px; width: 92%; margin: 80px auto; }
+        
+        .story-wrapper { max-width: 850px; width: 92%; margin: 60px auto; }
+        
+        /* The Card to be captured as Image */
         .paper-card { 
             background: var(--parchment); padding: 50px 40px; border-radius: 4px;
-            box-shadow: 0 15px 50px rgba(0,0,0,0.6); border: 1px solid var(--gold);
-            position: relative; line-height: 1.8; min-height: 450px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.6); border: 2px solid var(--gold);
+            position: relative; line-height: 1.8;
         }
 
         .lang-btn {
@@ -38,51 +33,51 @@
         .category { font-family: 'Cinzel'; font-size: 0.8rem; color: var(--gold); letter-spacing: 2px; }
         .title { font-family: 'Cinzel'; font-size: 2rem; color: var(--deep-blue); margin: 10px 0; }
         
-        .story-body { font-size: 1.2rem; text-align: justify; white-space: pre-wrap; }
-        .moral-highlight { 
-            margin-top: 40px; padding: 20px; background: rgba(255, 153, 51, 0.1); 
-            border-left: 5px solid var(--saffron); font-style: italic;
-        }
+        .story-body { font-size: 1.2rem; text-align: justify; white-space: pre-wrap; margin-bottom: 20px; }
+        .moral-highlight { padding: 20px; background: rgba(255, 153, 51, 0.1); border-left: 5px solid var(--saffron); font-style: italic; }
+        
+        .watermark { text-align: right; font-family: 'Cinzel'; color: var(--gold); font-size: 0.8rem; margin-top: 15px; display: none; }
 
-        .loader { border: 3px solid #f3f3f3; border-top: 3px solid var(--saffron); border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; display: inline-block; margin-right: 10px; }
+        /* Action Buttons */
+        .action-container { display: flex; justify-content: center; gap: 15px; margin-top: 30px; flex-wrap: wrap; }
+        .btn {
+            padding: 12px 25px; border-radius: 50px; text-decoration: none; 
+            font-family: 'Cinzel'; font-weight: bold; border: none; cursor: pointer;
+            display: inline-flex; align-items: center; gap: 10px; transition: 0.3s;
+        }
+        .whatsapp-btn { background-color: #25D366; color: white; box-shadow: 0 4px 12px rgba(37,211,102,0.3); }
+        .download-btn { background-color: var(--deep-blue); color: white; box-shadow: 0 4px 12px rgba(26,42,108,0.3); }
+        .btn:hover { transform: translateY(-3px); opacity: 0.9; }
+
+        .loader { border: 3px solid #f3f3f3; border-top: 3px solid var(--saffron); border-radius: 50%; width: 25px; height: 25px; animation: spin 1s linear infinite; display: inline-block; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
-    <div class="header-nav"><div class="menu-icon" onclick="toggleMenu()">☰</div></div>
-    <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
-    <div class="side-drawer" id="sideDrawer">
-        <div style="padding: 20px; cursor:pointer;" onclick="toggleMenu()">✕ Close</div>
-        <div class="menu-links">
-            <a href="#">Home</a>
-            <a href="#" style="color: var(--saffron);">Today's Story</a>
-        </div>
-    </div>
-
     <div class="story-wrapper">
-        <div class="paper-card">
+        <div class="paper-card" id="capture-area">
             <button class="lang-btn" onclick="switchLang()" id="langToggle">English Mode</button>
             <header class="story-header">
-                <div class="category" id="cat-label">प्रेरणादायक कथा</div>
+                <div class="category" id="cat-label">आज की कथा</div>
                 <h1 class="title" id="story-title">लोड हो रहा है...</h1>
             </header>
-            <div class="story-body" id="main-story">कृपया प्रतीक्षा करें...</div>
+            <div class="story-body" id="main-story">सर्वर से कहानी प्राप्त की जा रही है...</div>
             <div class="moral-highlight" id="moral-text"></div>
+            <div class="watermark" id="brand-watermark">DivineMurti.in</div>
+        </div>
+        <div class="action-container">
+            <button class="btn whatsapp-btn" onclick="shareToWhatsApp()">WhatsApp शेयर</button>
+            <button class="btn download-btn" onclick="downloadImage()">इमेज सेव करें</button>
         </div>
     </div>
 
     <script>
         let currentLang = 'hi';
-        let activeStory = {
-            title: "The Golden Egg",
-            body: "A farmer had a goose that laid a golden egg every day. Greed took over him, and he killed the goose to get all eggs at once, but found nothing inside.",
-            moral: "Greed destroys everything."
-        };
+        let dailyStory = null;
+        let currentTranslations = { title: "", story: "", moral: "" };
+        const API_ALL_STORIES = "https://shortstories-api.onrender.com/stories";
 
-        const REPO_URL = "https://raw.githubusercontent.com/finesse/short-stories/master/stories.json";
-
-        // 1. Google Translation Logic
         async function translate(text, target) {
             try {
                 const res = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=${target}&dt=t&q=${encodeURIComponent(text)}`);
@@ -91,48 +86,74 @@
             } catch (e) { return text; }
         }
 
-        // 2. Fetch from GitHub
-        async function init() {
+        async function fetchDailyStory() {
             try {
-                // We add a cache-buster to prevent the browser from blocking the "old" file
-                const response = await fetch(REPO_URL + "?v=" + Math.random());
-                if (!response.ok) throw new Error("CORS or Network Error");
-                const data = await response.json();
-                const day = new Date().getDate() % data.length;
-                activeStory = {
-                    title: data[day].title,
-                    body: data[day].story,
-                    moral: "Goodness is the best policy."
-                };
-            } catch (err) {
-                console.log("Using Fallback Story because GitHub is blocked locally.");
-            }
-            render();
+                const response = await fetch(API_ALL_STORIES);
+                const allStories = await response.json();
+                const today = new Date();
+                const startOfYear = new Date(today.getFullYear(), 0, 0);
+                const dayOfYear = Math.floor((today - startOfYear) / 86400000);
+                dailyStory = allStories[dayOfYear % allStories.length];
+                render();
+            } catch (err) { setTimeout(fetchDailyStory, 3000); }
         }
 
-        // 3. Display Logic
         async function render() {
+            if(!dailyStory) return;
             const titleEl = document.getElementById('story-title');
             const bodyEl = document.getElementById('main-story');
             const moralEl = document.getElementById('moral-text');
 
             if (currentLang === 'hi') {
-                titleEl.innerHTML = '<span class="loader"></span>अनुवाद...';
+                titleEl.innerHTML = '<span class="loader"></span> अनुवाद...';
                 const [t, b, m] = await Promise.all([
-                    translate(activeStory.title, 'hi'),
-                    translate(activeStory.body, 'hi'),
-                    translate(activeStory.moral, 'hi')
+                    translate(dailyStory.title, 'hi'),
+                    translate(dailyStory.story, 'hi'),
+                    translate(dailyStory.moral, 'hi')
                 ]);
+                currentTranslations = { title: t, story: b, moral: m };
                 titleEl.innerText = t;
                 bodyEl.innerText = b;
                 moralEl.innerHTML = `<b>शिक्षा:</b> ${m}`;
                 document.getElementById('langToggle').innerText = "English Mode";
             } else {
-                titleEl.innerText = activeStory.title;
-                bodyEl.innerText = activeStory.body;
-                moralEl.innerHTML = `<b>Moral:</b> ${activeStory.moral}`;
-                document.getElementById('langToggle').innerText = "हिंदी मोड";
+                titleEl.innerText = dailyStory.title;
+                bodyEl.innerText = dailyStory.story;
+                moralEl.innerHTML = `<b>Moral:</b> ${dailyStory.moral}`;
+                document.getElementById('langToggle').innerText = "हिंदी में पढ़ें";
             }
+        }
+
+        function downloadImage() {
+            const area = document.getElementById('capture-area');
+            const btn = document.getElementById('langToggle');
+            const watermark = document.getElementById('brand-watermark');
+            
+            // UI Cleanup for photo: Hide buttons, show watermark
+            btn.style.display = 'none';
+            watermark.style.display = 'block';
+
+            html2canvas(area, { backgroundColor: "#1a1a1a", scale: 2 }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `DivineMurti-Story-${new Date().toLocaleDateString()}.png`;
+                link.href = canvas.toDataURL();
+                link.click();
+
+                // Restore UI
+                btn.style.display = 'block';
+                watermark.style.display = 'none';
+            });
+        }
+
+        function shareToWhatsApp() {
+            let text = "";
+            const siteLink = window.location.href;
+            if (currentLang === 'hi') {
+                text = `✨ *आज की विशेष कथा* ✨\n\n*${currentTranslations.title}*\n\n📖 *शिक्षा:* ${currentTranslations.moral}\n\nपूरी कहानी यहाँ पढ़ें: ${siteLink}`;
+            } else {
+                text = `✨ *Story of the Day* ✨\n\n*${dailyStory.title}*\n\n📖 *Moral:* ${dailyStory.moral}\n\nRead here: ${siteLink}`;
+            }
+            window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
         }
 
         function switchLang() {
@@ -140,12 +161,7 @@
             render();
         }
 
-        function toggleMenu() {
-            document.getElementById('sideDrawer').classList.toggle('open');
-            document.getElementById('overlay').classList.toggle('active');
-        }
-
-        init();
+        fetchDailyStory();
     </script>
 </body>
 </html>
