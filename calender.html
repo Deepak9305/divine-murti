@@ -1,113 +1,78 @@
-
 <!DOCTYPE html>
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hindu Calendar 2026 | DivineMurti.in</title>
-    
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-    
     <style>
         :root {
-            --saffron: #FF9933; 
-            --gold: #D4AF37; 
-            --deep-blue: #1a2a6c;
-            --text-color: #333; 
-            --parchment: #fdfaf0;
-            --sunday-red: #b21f1f;
+            --saffron: #FF9933; --gold: #D4AF37; --deep-blue: #1a2a6c;
+            --text-color: #333; --parchment: #fdfaf0; --sunday: #b21f1f;
         }
-
         body {
             margin: 0; padding: 0; font-family: 'Lora', serif;
             background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
             background-attachment: fixed; color: var(--text-color);
-            display: flex; flex-direction: column; align-items: center;
+            display: flex; flex-direction: column; align-items: center; min-height: 100vh;
         }
 
-        /* --- NAVIGATION --- */
+        /* Navigation Styles */
         .month-nav {
-            position: fixed; top: 0; left: 0; width: 100%; 
-            background: white; display: flex; overflow-x: auto; 
-            white-space: nowrap; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            padding: 10px 0; scroll-behavior: smooth;
+            position: fixed; top: 0; left: 0; width: 100%; background: white;
+            display: flex; overflow-x: auto; white-space: nowrap; z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2); padding: 10px 0;
         }
         .nav-link {
             padding: 10px 20px; cursor: pointer; font-family: 'Cinzel', serif;
             color: var(--deep-blue); font-weight: bold; transition: 0.3s;
-            flex-shrink: 0;
         }
         .nav-link.active { color: var(--saffron); border-bottom: 3px solid var(--saffron); }
 
-        /* --- MAIN CONTAINER --- */
+        /* Main Container */
         .container {
-            max-width: 1000px; width: 95%; margin: 80px 0 40px 0;
-            background: rgba(255, 255, 255, 0.98); padding: 25px;
+            max-width: 900px; width: 95%; margin: 80px 0 40px 0;
+            background: rgba(255, 255, 255, 0.95); padding: 20px;
             border-radius: 20px; box-shadow: 0 15px 45px rgba(0,0,0,0.4);
         }
 
-        .header-title {
-            text-align: center; font-family: 'Cinzel', serif;
-            color: var(--deep-blue); margin-bottom: 10px;
+        .month-header {
+            font-family: 'Cinzel', serif; color: var(--deep-blue);
+            text-align: center; border-bottom: 2px solid var(--gold);
+            padding-bottom: 10px; margin-top: 40px;
         }
 
-        /* --- CALENDAR GRID --- */
-        .month-section { margin-top: 50px; scroll-margin-top: 80px; }
-        .month-name {
-            font-family: 'Cinzel', serif; color: var(--saffron);
-            border-bottom: 2px solid var(--gold); padding-bottom: 5px;
-            margin-bottom: 20px; font-size: 1.8rem; text-align: center;
-        }
-
+        /* Calendar Grid */
         .calendar-grid {
-            display: grid; grid-template-columns: repeat(7, 1fr);
-            gap: 2px; background: #ddd; border: 2px solid #ddd;
-            border-radius: 8px; overflow: hidden;
+            display: grid; grid-template-columns: repeat(7, 1-fr);
+            gap: 5px; margin-top: 20px; border: 1px solid #ddd; background: #fff;
         }
-
         .grid-header {
-            background: var(--deep-blue); color: white; padding: 12px 5px;
-            text-align: center; font-weight: bold; font-size: 0.85rem;
-            text-transform: uppercase;
+            background: var(--deep-blue); color: white; padding: 10px 0;
+            font-weight: bold; font-size: 0.8rem; text-align: center;
         }
-
         .grid-day {
-            background: white; min-height: 100px; padding: 8px;
-            position: relative; transition: 0.2s;
+            min-height: 80px; padding: 5px; border: 1px solid #eee;
+            position: relative; font-size: 0.9rem;
         }
-        .grid-day:hover { background: #fffdf5; }
-
-        .day-num { font-weight: bold; font-size: 1.2rem; margin-bottom: 5px; display: block; }
-        .grid-day.sun .day-num { color: var(--sunday-red); }
-        .grid-day.empty { background: #f9f9f9; }
+        .grid-day.today { background: #fff9e6; border: 2px solid var(--saffron); }
+        .grid-day.sun { color: var(--sunday); }
         
-        .grid-day.today { 
-            background: #fff4e6; 
-            border: 2px solid var(--saffron); 
-            z-index: 1;
-        }
-
-        /* --- FESTIVAL TAGS --- */
-        .fest-list { display: flex; flex-direction: column; gap: 4px; }
+        .day-num { font-weight: bold; font-size: 1.1rem; }
         .fest-tag {
-            background: #fff0e0; color: #d35400; font-size: 0.7rem;
-            padding: 3px 5px; border-radius: 4px; border-left: 3px solid var(--saffron);
-            line-height: 1.2; font-weight: 600;
+            font-size: 0.65rem; background: var(--saffron); color: white;
+            padding: 2px 4px; border-radius: 3px; margin-top: 4px;
+            display: block; line-height: 1.2;
         }
 
-        #scrollTop {
-            position: fixed; bottom: 30px; right: 30px; 
-            background: var(--deep-blue); color: white; border: none;
-            width: 50px; height: 50px; border-radius: 50%; 
-            cursor: pointer; display: none; font-size: 1.5rem;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 1000;
-        }
+        /* Sidebar & Others */
+        .sidebar { position: fixed; top: 0; right: -280px; width: 280px; height: 100%; background: white; z-index: 1001; transition: 0.4s; padding: 20px; box-shadow: -2px 0 10px rgba(0,0,0,0.2); }
+        .sidebar.active { right: 0; }
+        #scrollTop { position: fixed; bottom: 20px; right: 20px; display: none; background: var(--saffron); color: white; border: none; padding: 10px 15px; border-radius: 50%; cursor: pointer; }
 
-        @media (max-width: 768px) {
-            .grid-day { min-height: 70px; padding: 4px; }
-            .day-num { font-size: 1rem; }
-            .fest-tag { font-size: 0.6rem; padding: 2px; }
-            .grid-header { font-size: 0.7rem; padding: 8px 2px; }
+        @media (max-width: 600px) {
+            .grid-day { min-height: 60px; font-size: 0.7rem; }
+            .day-num { font-size: 0.9rem; }
         }
     </style>
 </head>
@@ -116,105 +81,90 @@
     <div class="month-nav" id="monthNav"></div>
 
     <div class="container">
-        <div class="header-title">
-            <p style="letter-spacing: 3px; font-size: 0.9rem; margin-bottom: 5px;">DIVINEMURTI.IN</p>
-            <h1>हिंदू व्रत एवं त्योहार 2026</h1>
-            <p>विक्रम संवत 2082/83</p>
-        </div>
-
+        <h1 style="text-align: center; font-family: 'Cinzel'; color: var(--deep-blue);">हिंदू कैलेंडर 2026</h1>
         <div id="full-calendar"></div>
     </div>
 
-    <button id="scrollTop" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑</button>
+    <button id="scrollTop" onclick="window.scrollTo({top:0, behavior:'smooth'})">↑</button>
 
     <script>
         const monthNames = ["जनवरी", "फरवरी", "मार्च", "अप्रैल", "मई", "जून", "जुलाई", "अगस्त", "सितंबर", "अक्टूबर", "नवंबर", "दिसंबर"];
         const dayNames = ["रवि", "सोम", "मंगल", "बुध", "गुरु", "शुक्र", "शनि"];
 
-        // 2026 Complete Festival Data
         const festivalData = [
-            { d: 1, m: 0, n: "वैकुंठ एकादशी" }, { d: 14, m: 0, n: "मकर संक्रांति" }, { d: 22, m: 0, n: "बसंत पंचमी" }, { d: 30, m: 0, n: "जया एकादशी" },
-            { d: 1, m: 1, n: "माघ पूर्णिमा" }, { d: 13, m: 1, n: "विजया एकादशी" }, { d: 15, m: 1, n: "महा शिवरात्रि" }, { d: 28, m: 1, n: "आमलकी एकादशी" },
-            { d: 3, m: 2, n: "होलिका दहन" }, { d: 4, m: 2, n: "होली" }, { d: 14, m: 2, n: "पापमोचिनी एकादशी" }, { d: 19, m: 2, n: "गुड़ी पड़वा / नवरात्रि" }, { d: 27, m: 2, n: "राम नवमी" }, { d: 29, m: 2, n: "कामदा एकादशी" },
-            { d: 1, m: 3, n: "हनुमान जयंती" }, { d: 13, m: 3, n: "वरुथिनी एकादशी" }, { d: 20, m: 3, n: "अक्षय तृतीया" }, { d: 28, m: 3, n: "मोहिनी एकादशी" },
-            { d: 1, m: 4, n: "बुद्ध पूर्णिमा" }, { d: 12, m: 4, n: "अपरा एकादशी" }, { d: 26, m: 4, n: "निर्जला एकादशी" },
-            { d: 11, m: 5, n: "योगिनी एकादशी" }, { d: 25, m: 5, n: "देवशयनी एकादशी" }, { d: 30, m: 5, n: "गुरु पूर्णिमा" },
-            { d: 10, m: 6, n: "कामिका एकादशी" }, { d: 24, m: 6, n: "पद्मिनी एकादशी" },
-            { d: 8, m: 7, n: "परमा एकादशी" }, { d: 23, m: 7, n: "पुत्रदा एकादशी" }, { d: 28, m: 7, n: "रक्षा बंधन" },
-            { d: 4, m: 8, n: "कृष्ण जन्माष्टमी" }, { d: 7, m: 8, n: "अजा एकादशी" }, { d: 14, m: 8, n: "गणेश चतुर्थी" }, { d: 20, m: 8, n: "परिवर्तिनी एकादशी" }, { d: 26, m: 8, n: "पितृपक्ष प्रारंभ" },
-            { d: 6, m: 9, n: "इन्दिरा एकादशी" }, { d: 12, m: 9, n: "शारदीय नवरात्रि" }, { d: 20, m: 9, n: "दशहरा" }, { d: 22, m: 9, n: "पापांकुशा एकादशी" }, { d: 29, m: 9, n: "करवा चौथ" },
-            { d: 5, m: 10, n: "रमा एकादशी" }, { d: 7, m: 10, n: "धनतेरस" }, { d: 8, m: 10, n: "दीपावली" }, { d: 10, m: 10, n: "भाई दूज" }, { d: 15, m: 10, n: "छठ पूजा" }, { d: 20, m: 10, n: "देवोत्थान एकादशी" },
-            { d: 5, m: 11, n: "उत्पन्ना एकादशी" }, { d: 19, m: 11, n: "गीता जयंती" }, { d: 25, m: 11, n: "क्रिसमस" }
+            { d: 1, m: 0, n: "वैकुंठ एकादशी" },
+            { d: 14, m: 0, n: "मकर संक्रांति" },
+            { d: 26, m: 0, n: "गणतंत्र दिवस" },
+            { d: 15, m: 1, n: "महा शिवरात्रि" },
+            { d: 4, m: 2, n: "होली" },
+            { d: 19, m: 2, n: "गुड़ी पड़वा" },
+            { d: 27, m: 2, n: "राम नवमी" },
+            { d: 1, m: 3, n: "हनुमान जयंती" },
+            { d: 20, m: 3, n: "अक्षय तृतीया" },
+            { d: 15, m: 7, n: "स्वतंत्रता दिवस" },
+            { d: 28, m: 7, n: "रक्षा बंधन" },
+            { d: 4, m: 8, n: "कृष्ण जन्माष्टमी" },
+            { d: 20, m: 9, n: "दशहरा" },
+            { d: 8, m: 10, n: "दीपावली" }
         ];
 
-        function renderCalendar() {
-            const container = document.getElementById('full-calendar');
-            const nav = document.getElementById('monthNav');
+        function initCalendar() {
+            const calendarEl = document.getElementById('full-calendar');
+            const navEl = document.getElementById('monthNav');
             const today = new Date();
             const curYear = 2026;
 
-            let calHtml = "";
+            let calendarHtml = "";
             let navHtml = "";
 
             for (let m = 0; m < 12; m++) {
-                // Generate Nav Links
-                navHtml += `<div class="nav-link" id="nav-${m}" onclick="scrollToMonth(${m})">${monthNames[m]}</div>`;
+                // Generate Nav
+                navHtml += `<div class="nav-link" onclick="document.getElementById('month-${m}').scrollIntoView({behavior:'smooth'})">${monthNames[m]}</div>`;
 
-                // Section for each month
-                calHtml += `
-                    <section class="month-section" id="month-${m}">
-                        <div class="month-name">${monthNames[m]} 2026</div>
-                        <div class="calendar-grid">
-                            ${dayNames.map(d => `<div class="grid-header">${d}</div>`).join('')}
-                `;
+                // Start Month Section
+                calendarHtml += `<section id="month-${m}">
+                    <h2 class="month-header">${monthNames[m]} 2026</h2>
+                    <div class="calendar-grid">`;
+
+                // Day Headers
+                dayNames.forEach(d => { calendarHtml += `<div class="grid-header">${d}</div>`; });
 
                 const firstDay = new Date(curYear, m, 1).getDay();
                 const daysInMonth = new Date(curYear, m + 1, 0).getDate();
 
-                // Empty slots for previous month
+                // Padding for empty days
                 for (let i = 0; i < firstDay; i++) {
-                    calHtml += `<div class="grid-day empty"></div>`;
+                    calendarHtml += `<div class="grid-day"></div>`;
                 }
 
-                // Days of current month
+                // Days of the month
                 for (let d = 1; d <= daysInMonth; d++) {
-                    const isSun = new Date(curYear, m, d).getDay() === 0 ? 'sun' : '';
-                    const isToday = (today.getDate() === d && today.getMonth() === m && today.getFullYear() === 2026) ? 'today' : '';
+                    const isToday = (today.getDate() === d && today.getMonth() === m && today.getFullYear() === curYear) ? 'today' : '';
+                    const isSun = (new Date(curYear, m, d).getDay() === 0) ? 'sun' : '';
                     
                     const festivals = festivalData.filter(f => f.d === d && f.m === m);
-                    let festHtml = festivals.map(f => `<div class="fest-tag">${f.n}</div>`).join('');
+                    let festHtml = festivals.map(f => `<span class="fest-tag">${f.n}</span>`).join('');
 
-                    calHtml += `
-                        <div class="grid-day ${isSun} ${isToday}">
-                            <span class="day-num">${d}</span>
-                            <div class="fest-list">${festHtml}</div>
-                        </div>
-                    `;
+                    calendarHtml += `
+                        <div class="grid-day ${isToday} ${isSun}">
+                            <div class="day-num">${d}</div>
+                            ${festHtml}
+                        </div>`;
                 }
 
-                calHtml += `</div></section>`;
+                calendarHtml += `</div></section>`;
             }
 
-            container.innerHTML = calHtml;
-            nav.innerHTML = navHtml;
-
-            // Highlight current month in nav
-            const curMonth = today.getFullYear() === 2026 ? today.getMonth() : 0;
-            document.getElementById(`nav-${curMonth}`).classList.add('active');
-        }
-
-        function scrollToMonth(m) {
-            document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
-            document.getElementById(`nav-${m}`).classList.add('active');
-            document.getElementById(`month-${m}`).scrollIntoView({ behavior: 'smooth' });
+            navEl.innerHTML = navHtml;
+            calendarEl.innerHTML = calendarHtml;
         }
 
         window.onscroll = function() {
             const btn = document.getElementById("scrollTop");
-            btn.style.display = window.scrollY > 500 ? "block" : "none";
+            btn.style.display = (window.scrollY > 400) ? "block" : "none";
         };
 
-        renderCalendar();
+        initCalendar();
     </script>
 </body>
 </html>
