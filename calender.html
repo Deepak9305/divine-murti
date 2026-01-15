@@ -4,177 +4,224 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hindu Calendar 2026 | DivineMurti.in</title>
+    
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
     <style>
         :root {
             --saffron: #FF9933; --gold: #D4AF37; --deep-blue: #1a2a6c;
-            --text-color: #333; --parchment: #fdfaf0; --sunday: #b21f1f;
+            --text-color: #333; --parchment: #fdfaf0; --sunday-red: #b21f1f;
         }
+
         body {
             margin: 0; padding: 0; font-family: 'Lora', serif;
             background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
             background-attachment: fixed; color: var(--text-color);
-            display: flex; flex-direction: column; align-items: center; min-height: 100vh;
+            display: flex; flex-direction: column; align-items: center;
         }
 
-        /* Navigation Styles */
+        /* --- HEADER & MENU STYLES --- */
+        .header-nav {
+            position: fixed; top: 0; right: 0; padding: 15px 25px; z-index: 1100;
+        }
+        .menu-icon {
+            font-size: 2.2rem; color: #fff; cursor: pointer;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.3); transition: 0.3s;
+        }
+
+        .side-drawer {
+            position: fixed; top: 0; right: -300px; width: 280px; height: 100%;
+            background: var(--deep-blue); color: white;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.5);
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1200; padding-top: 60px;
+        }
+        .side-drawer.active { right: 0; }
+        
+        .close-btn {
+            position: absolute; top: 20px; left: 20px;
+            font-size: 1.5rem; color: var(--gold); cursor: pointer;
+        }
+
+        .menu-links { display: flex; flex-direction: column; padding: 20px; }
+        .menu-links a {
+            font-family: 'Cinzel', serif; color: #fff; text-decoration: none;
+            padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.1);
+            font-size: 1.1rem; transition: 0.3s;
+        }
+        .menu-links a:hover { color: var(--saffron); padding-left: 10px; }
+
+        .overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); display: none; z-index: 1150;
+        }
+        .overlay.active { display: block; }
+
+        /* --- MONTH HORIZONTAL NAV --- */
         .month-nav {
-            position: fixed; top: 0; left: 0; width: 100%; background: white;
-            display: flex; overflow-x: auto; white-space: nowrap; z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2); padding: 10px 0;
+            position: fixed; top: 0; left: 0; width: calc(100% - 80px); 
+            background: rgba(255,255,255,0.95); display: flex; overflow-x: auto; 
+            white-space: nowrap; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 15px 0;
         }
         .nav-link {
-            padding: 10px 20px; cursor: pointer; font-family: 'Cinzel', serif;
-            color: var(--deep-blue); font-weight: bold; transition: 0.3s;
+            padding: 5px 15px; cursor: pointer; font-family: 'Cinzel', serif;
+            color: var(--deep-blue); font-weight: bold; flex-shrink: 0;
         }
-        .nav-link.active { color: var(--saffron); border-bottom: 3px solid var(--saffron); }
+        .nav-link.active { color: var(--saffron); border-bottom: 2px solid var(--saffron); }
 
-        /* Main Container */
+        /* --- CALENDAR CONTENT --- */
         .container {
-            max-width: 900px; width: 95%; margin: 80px 0 40px 0;
-            background: rgba(255, 255, 255, 0.95); padding: 20px;
+            max-width: 1000px; width: 92%; margin: 100px 0 40px 0;
+            background: rgba(255, 255, 255, 0.98); padding: 30px;
             border-radius: 20px; box-shadow: 0 15px 45px rgba(0,0,0,0.4);
         }
 
-        .month-header {
+        .month-section { margin-top: 40px; scroll-margin-top: 120px; }
+        .month-name {
             font-family: 'Cinzel', serif; color: var(--deep-blue);
-            text-align: center; border-bottom: 2px solid var(--gold);
-            padding-bottom: 10px; margin-top: 40px;
+            border-bottom: 2px solid var(--gold); padding-bottom: 10px;
+            margin-bottom: 20px; font-size: 2rem; text-align: center;
         }
 
-        /* Calendar Grid */
         .calendar-grid {
-            display: grid; grid-template-columns: repeat(7, 1-fr);
-            gap: 5px; margin-top: 20px; border: 1px solid #ddd; background: #fff;
-        }
-        .grid-header {
-            background: var(--deep-blue); color: white; padding: 10px 0;
-            font-weight: bold; font-size: 0.8rem; text-align: center;
-        }
-        .grid-day {
-            min-height: 80px; padding: 5px; border: 1px solid #eee;
-            position: relative; font-size: 0.9rem;
-        }
-        .grid-day.today { background: #fff9e6; border: 2px solid var(--saffron); }
-        .grid-day.sun { color: var(--sunday); }
-        
-        .day-num { font-weight: bold; font-size: 1.1rem; }
-        .fest-tag {
-            font-size: 0.65rem; background: var(--saffron); color: white;
-            padding: 2px 4px; border-radius: 3px; margin-top: 4px;
-            display: block; line-height: 1.2;
+            display: grid; grid-template-columns: repeat(7, 1fr);
+            gap: 1px; background: #e0e0e0; border: 1px solid #ddd;
         }
 
-        /* Sidebar & Others */
-        .sidebar { position: fixed; top: 0; right: -280px; width: 280px; height: 100%; background: white; z-index: 1001; transition: 0.4s; padding: 20px; box-shadow: -2px 0 10px rgba(0,0,0,0.2); }
-        .sidebar.active { right: 0; }
-        #scrollTop { position: fixed; bottom: 20px; right: 20px; display: none; background: var(--saffron); color: white; border: none; padding: 10px 15px; border-radius: 50%; cursor: pointer; }
+        .grid-header {
+            background: #f8f8f8; color: var(--deep-blue); padding: 10px 5px;
+            text-align: center; font-weight: bold; font-size: 0.8rem;
+        }
+
+        .grid-day {
+            background: white; min-height: 110px; padding: 8px;
+            position: relative;
+        }
+        .day-num { font-weight: 700; font-size: 1.1rem; }
+        .grid-day.sun .day-num { color: var(--sunday-red); }
+        .grid-day.today { background: #fff9e6; outline: 2px solid var(--saffron); z-index: 2; }
+        
+        .fest-tag {
+            background: #fff0e0; color: #e67e22; font-size: 0.7rem;
+            padding: 2px 4px; border-radius: 3px; margin-top: 4px;
+            display: block; font-weight: bold; border-left: 3px solid var(--saffron);
+        }
+
+        #scrollTop {
+            position: fixed; bottom: 20px; right: 20px; display: none;
+            background: var(--saffron); color: white; border: none;
+            width: 45px; height: 45px; border-radius: 50%; cursor: pointer;
+        }
 
         @media (max-width: 600px) {
-            .grid-day { min-height: 60px; font-size: 0.7rem; }
+            .grid-day { min-height: 70px; padding: 4px; }
             .day-num { font-size: 0.9rem; }
+            .month-nav { width: calc(100% - 60px); }
         }
     </style>
 </head>
 <body>
 
+    <div class="header-nav">
+        <div class="menu-icon" onclick="toggleMenu()">☰</div>
+    </div>
+
+    <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+    
+    <div class="side-drawer" id="sidebar">
+        <div class="close-btn" onclick="toggleMenu()">✕</div>
+        <div class="menu-links">
+            <a href="calender.html">Panchang 2026</a>
+            <a href="horoscope.html">Daily Horoscope</a>
+            <a href="dailystory.html">Today's Story</a>
+            <a href="gita.html">Bhagavad Gita</a>
+            <a href="/" style="color: var(--gold); margin-top: 20px;">Home</a>
+        </div>
+    </div>
+
     <div class="month-nav" id="monthNav"></div>
 
     <div class="container">
-        <h1 style="text-align: center; font-family: 'Cinzel'; color: var(--deep-blue);">हिंदू कैलेंडर 2026</h1>
+        <div style="text-align: center; margin-bottom: 30px;">
+            <h1 style="font-family: 'Cinzel'; color: var(--deep-blue); margin: 0;">हिंदू पंचांग 2026</h1>
+            <p style="color: var(--gold); letter-spacing: 2px; font-weight: bold;">विक्रम संवत 2082 - 2083</p>
+        </div>
+
         <div id="full-calendar"></div>
     </div>
 
-    <button id="scrollTop" onclick="window.scrollTo({top:0, behavior:'smooth'})">↑</button>
+    <button id="scrollTop" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑</button>
 
     <script>
-       const monthNames = ["जनवरी", "फरवरी", "मार्च", "अप्रैल", "मई", "जून", "जुलाई", "अगस्त", "सितंबर", "अक्टूबर", "नवंबर", "दिसंबर"];
+        function toggleMenu() {
+            document.getElementById('sidebar').classList.toggle('active');
+            document.getElementById('overlay').classList.toggle('active');
+        }
+
+        const monthNames = ["जनवरी", "फरवरी", "मार्च", "अप्रैल", "मई", "जून", "जुलाई", "अगस्त", "सितंबर", "अक्टूबर", "नवंबर", "दिसंबर"];
         const dayNames = ["रवि", "सोम", "मंगल", "बुध", "गुरु", "शुक्र", "शनि"];
 
-        // 2026 Complete Festival Data
         const festivalData = [
             { d: 1, m: 0, n: "वैकुंठ एकादशी" }, { d: 14, m: 0, n: "मकर संक्रांति" }, { d: 22, m: 0, n: "बसंत पंचमी" }, { d: 30, m: 0, n: "जया एकादशी" },
             { d: 1, m: 1, n: "माघ पूर्णिमा" }, { d: 13, m: 1, n: "विजया एकादशी" }, { d: 15, m: 1, n: "महा शिवरात्रि" }, { d: 28, m: 1, n: "आमलकी एकादशी" },
-            { d: 3, m: 2, n: "होलिका दहन" }, { d: 4, m: 2, n: "होली" }, { d: 14, m: 2, n: "पापमोचिनी एकादशी" }, { d: 19, m: 2, n: "गुड़ी पड़वा / नवरात्रि" }, { d: 27, m: 2, n: "राम नवमी" }, { d: 29, m: 2, n: "कामदा एकादशी" },
-            { d: 1, m: 3, n: "हनुमान जयंती" }, { d: 13, m: 3, n: "वरुथिनी एकादशी" }, { d: 20, m: 3, n: "अक्षय तृतीया" }, { d: 28, m: 3, n: "मोहिनी एकादशी" },
-            { d: 1, m: 4, n: "बुद्ध पूर्णिमा" }, { d: 12, m: 4, n: "अपरा एकादशी" }, { d: 26, m: 4, n: "निर्जला एकादशी" },
-            { d: 11, m: 5, n: "योगिनी एकादशी" }, { d: 25, m: 5, n: "देवशयनी एकादशी" }, { d: 30, m: 5, n: "गुरु पूर्णिमा" },
-            { d: 10, m: 6, n: "कामिका एकादशी" }, { d: 24, m: 6, n: "पद्मिनी एकादशी" },
-            { d: 8, m: 7, n: "परमा एकादशी" }, { d: 23, m: 7, n: "पुत्रदा एकादशी" }, { d: 28, m: 7, n: "रक्षा बंधन" },
-            { d: 4, m: 8, n: "कृष्ण जन्माष्टमी" }, { d: 7, m: 8, n: "अजा एकादशी" }, { d: 14, m: 8, n: "गणेश चतुर्थी" }, { d: 20, m: 8, n: "परिवर्तिनी एकादशी" }, { d: 26, m: 8, n: "पितृपक्ष प्रारंभ" },
-            { d: 6, m: 9, n: "इन्दिरा एकादशी" }, { d: 12, m: 9, n: "शारदीय नवरात्रि" }, { d: 20, m: 9, n: "दशहरा" }, { d: 22, m: 9, n: "पापांकुशा एकादशी" }, { d: 29, m: 9, n: "करवा चौथ" },
-            { d: 5, m: 10, n: "रमा एकादशी" }, { d: 7, m: 10, n: "धनतेरस" }, { d: 8, m: 10, n: "दीपावली" }, { d: 10, m: 10, n: "भाई दूज" }, { d: 15, m: 10, n: "छठ पूजा" }, { d: 20, m: 10, n: "देवोत्थान एकादशी" },
-            { d: 5, m: 11, n: "उत्पन्ना एकादशी" }, { d: 19, m: 11, n: "गीता जयंती" }, { d: 25, m: 11, n: "क्रिसमस" }
+            { d: 3, m: 2, n: "होलिका दहन" }, { d: 4, m: 2, n: "होली" }, { d: 19, m: 2, n: "गुड़ी पड़वा" }, { d: 27, m: 2, n: "राम नवमी" },
+            { d: 1, m: 3, n: "हनुमान जयंती" }, { d: 20, m: 3, n: "अक्षय तृतीया" }, { d: 1, m: 4, n: "बुद्ध पूर्णिमा" }, { d: 26, m: 4, n: "निर्जला एकादशी" },
+            { d: 25, m: 5, n: "देवशयनी एकादशी" }, { d: 30, m: 5, n: "गुरु पूर्णिमा" }, { d: 28, m: 7, n: "रक्षा बंधन" }, { d: 4, m: 8, n: "कृष्ण जन्माष्टमी" },
+            { d: 14, m: 8, n: "गणेश चतुर्थी" }, { d: 20, m: 9, n: "दशहरा" }, { d: 8, m: 10, n: "दीपावली" }, { d: 15, m: 10, n: "छठ पूजा" },
+            { d: 19, m: 11, n: "गीता जयंती" }
         ];
 
-        function renderCalendar() {
+        function initCalendar() {
             const container = document.getElementById('full-calendar');
             const nav = document.getElementById('monthNav');
             const today = new Date();
-            const curYear = 2026;
+            const year = 2026;
 
             let calHtml = "";
             let navHtml = "";
 
             for (let m = 0; m < 12; m++) {
-                // Generate Nav Links
                 navHtml += `<div class="nav-link" id="nav-${m}" onclick="scrollToMonth(${m})">${monthNames[m]}</div>`;
+                
+                calHtml += `<section class="month-section" id="month-${m}">
+                    <div class="month-name">${monthNames[m]} 2026</div>
+                    <div class="calendar-grid">`;
 
-                // Section for each month
-                calHtml += `
-                    <section class="month-section" id="month-${m}">
-                        <div class="month-name">${monthNames[m]} 2026</div>
-                        <div class="calendar-grid">
-                            ${dayNames.map(d => `<div class="grid-header">${d}</div>`).join('')}
-                `;
+                dayNames.forEach(d => calHtml += `<div class="grid-header">${d}</div>`);
 
-                const firstDay = new Date(curYear, m, 1).getDay();
-                const daysInMonth = new Date(curYear, m + 1, 0).getDate();
+                const firstDay = new Date(year, m, 1).getDay();
+                const totalDays = new Date(year, m + 1, 0).getDate();
 
-                // Empty slots for previous month
-                for (let i = 0; i < firstDay; i++) {
-                    calHtml += `<div class="grid-day empty"></div>`;
-                }
+                for (let i = 0; i < firstDay; i++) calHtml += `<div class="grid-day" style="background:#f9f9f9"></div>`;
 
-                // Days of current month
-                for (let d = 1; d <= daysInMonth; d++) {
-                    const isSun = new Date(curYear, m, d).getDay() === 0 ? 'sun' : '';
+                for (let d = 1; d <= totalDays; d++) {
+                    const isSun = new Date(year, m, d).getDay() === 0 ? 'sun' : '';
                     const isToday = (today.getDate() === d && today.getMonth() === m && today.getFullYear() === 2026) ? 'today' : '';
+                    const fests = festivalData.filter(f => f.d === d && f.m === m);
                     
-                    const festivals = festivalData.filter(f => f.d === d && f.m === m);
-                    let festHtml = festivals.map(f => `<div class="fest-tag">${f.n}</div>`).join('');
-
-                    calHtml += `
-                        <div class="grid-day ${isSun} ${isToday}">
-                            <span class="day-num">${d}</span>
-                            <div class="fest-list">${festHtml}</div>
-                        </div>
-                    `;
+                    calHtml += `<div class="grid-day ${isSun} ${isToday}">
+                        <span class="day-num">${d}</span>
+                        ${fests.map(f => `<span class="fest-tag">${f.n}</span>`).join('')}
+                    </div>`;
                 }
-
                 calHtml += `</div></section>`;
             }
-
             container.innerHTML = calHtml;
             nav.innerHTML = navHtml;
-
-            // Highlight current month in nav
-            const curMonth = today.getFullYear() === 2026 ? today.getMonth() : 0;
-            document.getElementById(`nav-${curMonth}`).classList.add('active');
         }
 
         function scrollToMonth(m) {
-            document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
             document.getElementById(`nav-${m}`).classList.add('active');
-            document.getElementById(`month-${m}`).scrollIntoView({ behavior: 'smooth' });
+            window.scrollTo({ top: document.getElementById(`month-${m}`).offsetTop - 120, behavior: 'smooth' });
         }
 
-        window.onscroll = function() {
-            const btn = document.getElementById("scrollTop");
-            btn.style.display = window.scrollY > 500 ? "block" : "none";
+        window.onscroll = () => {
+            document.getElementById("scrollTop").style.display = window.scrollY > 500 ? "block" : "none";
         };
 
-        renderCalendar();
+        initCalendar();
     </script>
 </body>
 </html>
