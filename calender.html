@@ -3,13 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>संपूर्ण हिन्दू कैलेंडर 2026 | DivineMurti</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <title>Daily Bhagavad Gita | DivineMurti.in</title>
     
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <style>
-        :root { --saffron: #FF9933; --gold: #D4AF37; --deep-blue: #1a2a6c; --parchment: #fdfaf0; }
-        body { margin: 0; font-family: 'Lora', serif; background: #1a1a1a; min-height: 100vh; color: #333; scroll-behavior: smooth; }
-        
+        :root {
+            --saffron: #FF9933; --gold: #D4AF37; --deep-blue: #1a2a6c;
+            --text-color: #333; --parchment: #fdfaf0;
+        }
+        body {
+            margin: 0; padding: 0; font-family: 'Lora', serif;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            background-attachment: fixed; color: var(--text-color);
+            display: flex; flex-direction: column; align-items: center; min-height: 100vh;
+        }
+
         /* --- TOP MENU STYLES --- */
         .header-nav {
             position: fixed; top: 0; right: 0; padding: 20px; z-index: 1000;
@@ -47,62 +55,41 @@
             background: rgba(0,0,0,0.5); display: none; z-index: 1000;
         }
         .overlay.active { display: block; }
-        /* Month Selection Bar */
-        .month-nav { 
-            position: fixed; top: 70px; width: 100%; background: var(--parchment); 
-            padding: 12px 10px; display: flex; overflow-x: auto; 
-            gap: 10px; z-index: 900; border-bottom: 1px solid var(--gold);
-            -ms-overflow-style: none; scrollbar-width: none;
+
+        /* --- MAIN CONTAINER STYLES --- */
+        .container {
+            max-width: 800px; width: 92%; margin: 80px 0 40px 0;
+            background: rgba(255, 255, 255, 0.98); padding: 40px;
+            border-radius: 20px; box-shadow: 0 15px 45px rgba(0,0,0,0.4); text-align: center;
         }
-        .month-nav::-webkit-scrollbar { display: none; }
-        .nav-link { 
-            padding: 8px 18px; background: white; border: 1px solid var(--gold); 
-            border-radius: 20px; font-family: 'Cinzel'; font-size: 0.75rem; 
-            white-space: nowrap; color: var(--deep-blue); cursor: pointer; transition: 0.3s; font-weight: bold;
+        .brand-header { font-family: 'Cinzel', serif; color: var(--gold); font-size: 1rem; letter-spacing: 5px; margin-bottom: 5px; font-weight: 700; }
+        h1 { font-family: 'Cinzel', serif; color: var(--deep-blue); font-size: 2.2rem; margin: 0 0 5px 0; }
+        .date-display { font-size: 0.9rem; color: #666; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 2px; }
+        .sanskrit { font-size: 1.7rem; color: var(--saffron); font-weight: bold; margin-bottom: 30px; line-height: 1.8; white-space: pre-line; }
+        .translation-box { border-top: 1px solid #eee; border-bottom: 1px solid #eee; padding: 30px 0; margin: 25px 0; }
+        .hindi-text { font-size: 1.55rem; line-height: 1.6; color: #b21f1f; margin-bottom: 25px; }
+        .english-text { font-size: 1.2rem; line-height: 1.7; color: #111; font-style: italic; }
+        
+        .commentary-section { 
+            text-align: left; background: var(--parchment); padding: 40px; 
+            border: 2px solid #f0e6cc; border-top: 5px solid var(--saffron); 
+            border-radius: 15px; margin-top: 35px; position: relative;
         }
-        .nav-link.active { background: var(--saffron); color: white; border-color: var(--saffron); }
+        .commentary-header { font-family: 'Cinzel', serif; color: var(--deep-blue); font-size: 1.4rem; margin-bottom: 25px; border-bottom: 1px solid var(--gold); padding-bottom: 10px; text-align: center; }
+        .insight-block { margin-bottom: 20px; }
+        .insight-title { font-family: 'Cinzel', serif; font-size: 0.85rem; color: var(--gold); font-weight: 700; margin-bottom: 5px; }
+        .insight-content { font-size: 1.05rem; line-height: 1.8; color: #333; }
 
-        /* Main Container */
-        .container { max-width: 800px; width: 92%; margin: 160px auto 50px; background: var(--parchment); padding: 30px; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid var(--gold); }
+        .share-group { margin-top: 40px; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
+        .btn { padding: 15px 30px; border-radius: 50px; color: white; border: none; cursor: pointer; text-decoration: none; font-family: 'Cinzel', serif; font-size: 0.85rem; font-weight: bold; transition: 0.3s; }
+        .btn-wa { background-color: #25D366; }
+        .btn-share { background-color: var(--deep-blue); }
         
-        /* Today's Special Info */
-        .panchang-today-box { background: white; border: 1.5px solid var(--gold); border-radius: 12px; padding: 20px; margin-bottom: 40px; text-align: center; }
-        .p-label { font-size: 0.75rem; color: var(--gold); font-weight: bold; font-family: 'Cinzel'; text-transform: uppercase; }
-        .p-value { font-size: 1.3rem; color: var(--deep-blue); font-weight: bold; display: block; margin-top: 5px; }
-        .p-divider { height: 1px; background: #eee; margin: 15px 0; }
-        .p-note { font-size: 0.85rem; color: #d63031; font-weight: bold; margin: 0; }
-
-        /* Calendar List */
-        .month-section { margin-bottom: 60px; scroll-margin-top: 170px; }
-        .month-header { font-family: 'Cinzel'; color: var(--deep-blue); font-size: 2rem; margin-bottom: 25px; text-align: center; border-bottom: 2px solid var(--saffron); padding-bottom: 10px; }
-        
-        .event-card { background: white; margin-bottom: 12px; padding: 18px; border-radius: 8px; border-left: 6px solid var(--saffron); display: flex; align-items: center; box-shadow: 0 3px 10px rgba(0,0,0,0.06); }
-        .event-card.today { border: 2.5px solid var(--deep-blue); border-left: 6px solid var(--deep-blue); background: #fffdf0; transform: scale(1.02); }
-        
-        .event-date { flex: 0 0 65px; text-align: center; border-right: 1px solid #eee; margin-right: 18px; }
-        .date-num { display: block; font-size: 1.7rem; font-weight: bold; color: var(--deep-blue); line-height: 1; }
-        .date-month { font-family: 'Cinzel'; font-size: 0.75rem; color: var(--gold); font-weight: bold; }
-        
-        .event-info { flex-grow: 1; }
-        .event-name { font-size: 1.2rem; font-weight: bold; color: #b21f1f; display: block; }
-        .event-desc { font-size: 0.9rem; color: #555; margin-top: 5px; line-height: 1.4; }
-
-        /* Sidebar & Overlay */
-        .sidebar { position: fixed; top: 0; right: -300px; width: 280px; height: 100%; background: var(--deep-blue); z-index: 2000; transition: 0.4s; padding: 80px 30px; box-sizing: border-box; }
-        .sidebar.active { right: 0; }
-        .sidebar-links a { color: white; font-family: 'Cinzel'; text-decoration: none; display: block; padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1500; display: none; }
-        .overlay.active { display: block; }
-
-        #scrollTop { position: fixed; bottom: 20px; right: 20px; background: var(--saffron); color: white; width: 45px; height: 45px; border-radius: 50%; display: none; align-items: center; justify-content: center; font-size: 1.5rem; border: none; cursor: pointer; z-index: 1000; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        .loader { border: 5px solid #f3f3f3; border-top: 5px solid var(--saffron); border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin: 40px auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
-
-    <nav class="navbar">
-        <a href="index.html" class="logo">DIVINE MURTI</a>
-        <div class="menu-btn" onclick="toggleMenu()">☰</div>
-    </nav>
 
     <div class="month-nav" id="monthNav"></div>
     <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
