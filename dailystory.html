@@ -3,18 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Bhagavad Gita | DivineMurti.in</title>
     
-    <title>आज की पौराणिक कथा | Daily Moral Stories - DivineMurti</title>
-    <meta name="description" content="DivineMurti पर हर दिन एक नई पौराणिक कथा पढ़ें। Daily moral stories in Hindi and English.">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    
     <style>
-        :root { --saffron: #FF9933; --gold: #D4AF37; --deep-blue: #1a2a6c; --parchment: #fdfaf0; --dark: #121212; }
-        
-        body { margin: 0; font-family: 'Lora', serif; background: var(--dark); color: #333; overflow-x: hidden; }
+        :root {
+            --saffron: #FF9933; --gold: #D4AF37; --deep-blue: #1a2a6c;
+            --text-color: #333; --parchment: #fdfaf0;
+        }
+        body {
+            margin: 0; padding: 0; font-family: 'Lora', serif;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            background-attachment: fixed; color: var(--text-color);
+            display: flex; flex-direction: column; align-items: center; min-height: 100vh;
+        }
 
-/* --- TOP MENU STYLES --- */
+        /* --- TOP MENU STYLES --- */
         .header-nav {
             position: fixed; top: 0; right: 0; padding: 20px; z-index: 1000;
         }
@@ -52,50 +56,40 @@
         }
         .overlay.active { display: block; }
 
-        /* --- Content Styles --- */
-        .story-wrapper { max-width: 850px; width: 92%; margin: 120px auto 60px; }
-        
-        article.paper-card { 
-            background: var(--parchment); padding: 50px 40px; border-radius: 4px;
-            box-shadow: 0 15px 50px rgba(0,0,0,0.6); border: 2px solid var(--gold);
-            position: relative; line-height: 1.8;
+        /* --- MAIN CONTAINER STYLES --- */
+        .container {
+            max-width: 800px; width: 92%; margin: 80px 0 40px 0;
+            background: rgba(255, 255, 255, 0.98); padding: 40px;
+            border-radius: 20px; box-shadow: 0 15px 45px rgba(0,0,0,0.4); text-align: center;
         }
-
-        .lang-btn {
-            position: absolute; top: 20px; right: 20px;
-            background: var(--deep-blue); color: white; border: none;
-            padding: 8px 16px; border-radius: 20px; cursor: pointer;
-            font-family: 'Cinzel'; font-size: 0.7rem; z-index: 10;
-        }
-
-        .story-header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid var(--saffron); padding-bottom: 15px; }
-        .category { font-family: 'Cinzel'; font-size: 0.8rem; color: var(--gold); letter-spacing: 2px; }
-        h1.title { font-family: 'Cinzel'; font-size: 2.2rem; color: var(--deep-blue); margin: 15px 0; }
+        .brand-header { font-family: 'Cinzel', serif; color: var(--gold); font-size: 1rem; letter-spacing: 5px; margin-bottom: 5px; font-weight: 700; }
+        h1 { font-family: 'Cinzel', serif; color: var(--deep-blue); font-size: 2.2rem; margin: 0 0 5px 0; }
+        .date-display { font-size: 0.9rem; color: #666; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 2px; }
+        .sanskrit { font-size: 1.7rem; color: var(--saffron); font-weight: bold; margin-bottom: 30px; line-height: 1.8; white-space: pre-line; }
+        .translation-box { border-top: 1px solid #eee; border-bottom: 1px solid #eee; padding: 30px 0; margin: 25px 0; }
+        .hindi-text { font-size: 1.55rem; line-height: 1.6; color: #b21f1f; margin-bottom: 25px; }
+        .english-text { font-size: 1.2rem; line-height: 1.7; color: #111; font-style: italic; }
         
-        .story-body { font-size: 1.25rem; text-align: justify; white-space: pre-wrap; margin-bottom: 25px; }
-        .moral-box { padding: 20px; background: rgba(255, 153, 51, 0.1); border-left: 5px solid var(--saffron); font-style: italic; font-size: 1.2rem; }
-        .watermark { text-align: right; font-family: 'Cinzel'; color: var(--gold); font-size: 0.9rem; margin-top: 15px; display: none; }
+        .commentary-section { 
+            text-align: left; background: var(--parchment); padding: 40px; 
+            border: 2px solid #f0e6cc; border-top: 5px solid var(--saffron); 
+            border-radius: 15px; margin-top: 35px; position: relative;
+        }
+        .commentary-header { font-family: 'Cinzel', serif; color: var(--deep-blue); font-size: 1.4rem; margin-bottom: 25px; border-bottom: 1px solid var(--gold); padding-bottom: 10px; text-align: center; }
+        .insight-block { margin-bottom: 20px; }
+        .insight-title { font-family: 'Cinzel', serif; font-size: 0.85rem; color: var(--gold); font-weight: 700; margin-bottom: 5px; }
+        .insight-content { font-size: 1.05rem; line-height: 1.8; color: #333; }
 
-        .btn-group { display: flex; justify-content: center; gap: 15px; margin-top: 30px; flex-wrap: wrap; }
-        .btn { padding: 12px 28px; border-radius: 50px; text-decoration: none; font-family: 'Cinzel'; font-weight: bold; border: none; cursor: pointer; transition: 0.3s; }
-        .wa-btn { background: #25D366; color: white; }
-        .dl-btn { background: var(--deep-blue); color: white; }
-
-        .loader { border: 3px solid #ddd; border-top: 3px solid var(--saffron); border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; display: inline-block; }
+        .share-group { margin-top: 40px; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
+        .btn { padding: 15px 30px; border-radius: 50px; color: white; border: none; cursor: pointer; text-decoration: none; font-family: 'Cinzel', serif; font-size: 0.85rem; font-weight: bold; transition: 0.3s; }
+        .btn-wa { background-color: #25D366; }
+        .btn-share { background-color: var(--deep-blue); }
+        
+        .loader { border: 5px solid #f3f3f3; border-top: 5px solid var(--saffron); border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin: 40px auto; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        
-        @media (max-width: 600px) {
-            article.paper-card { padding: 35px 20px; }
-            h1.title { font-size: 1.6rem; }
-        }
     </style>
 </head>
 <body>
-
-    <nav class="navbar">
-        <a href="index.html" class="logo">DIVINE MURTI</a>
-        <div class="menu-trigger" onclick="toggleMenu()">☰</div>
-    </nav>
 
     <div class="sidebar-overlay" id="overlay" onclick="toggleMenu()"></div>
     <div class="sidebar" id="sidebar">
